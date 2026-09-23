@@ -1,0 +1,64 @@
+@model BookListViewModel
+@{
+    ViewData["Title"] = "Библиотека";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="mb-0">Библиотека</h1>
+    <a class="btn btn-primary" asp-action="Create">Новая книга</a>
+</div>
+
+<form method="get" asp-action="Index" class="row g-2 mb-4">
+    <div class="col-sm-8 col-md-6">
+        <input class="form-control" type="search" name="query" value="@Model.Query" placeholder="Название, автор или фрагмент оглавления" />
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-outline-primary" type="submit">Найти</button>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(Model.Query))
+    {
+        <div class="col-auto">
+            <a class="btn btn-outline-secondary" asp-action="Index">Сбросить</a>
+        </div>
+    }
+</form>
+
+@if (Model.Items.Count == 0)
+{
+    <p class="text-muted">Книг не найдено.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Автор</th>
+                    <th>Год</th>
+                    <th>Жанр</th>
+                    <th>ISBN</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var book in Model.Items)
+                {
+                    <tr>
+                        <td><a asp-action="Details" asp-route-id="@book.Id">@book.Title</a></td>
+                        <td>@book.Author</td>
+                        <td>@book.PublishedYear</td>
+                        <td>@book.Genre</td>
+                        <td>@book.Isbn</td>
+                        <td class="text-nowrap text-end">
+                            <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@book.Id">Править</a>
+                            <form class="d-inline" asp-action="Delete" asp-route-id="@book.Id" method="post" onsubmit="return confirm('Удалить книгу?');">
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Удалить</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

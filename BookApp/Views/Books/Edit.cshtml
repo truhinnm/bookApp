@@ -1,0 +1,14 @@
+@model BookForm
+@{
+    ViewData["Title"] = "Правка";
+}
+
+<h1>Правка</h1>
+
+<form asp-action="Edit" method="post">
+    <partial name="_BookForm" model="Model" />
+    <div class="mt-3 d-flex gap-2">
+        <button class="btn btn-primary" type="submit">Сохранить</button>
+        <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.Id">К карточке</a>
+    </div>
+</form>

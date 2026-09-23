@@ -1,0 +1,14 @@
+@model BookForm
+@{
+    ViewData["Title"] = "Новая книга";
+}
+
+<h1>Новая книга</h1>
+
+<form asp-action="Create" method="post">
+    <partial name="_BookForm" model="Model" />
+    <div class="mt-3 d-flex gap-2">
+        <button class="btn btn-primary" type="submit">Сохранить</button>
+        <a class="btn btn-outline-secondary" asp-action="Index">К списку</a>
+    </div>
+</form>

@@ -1,0 +1,76 @@
+@model BookForm
+
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<input type="hidden" asp-for="Id" />
+
+<div class="row g-3">
+    <div class="col-md-8">
+        <label class="form-label" asp-for="Title">Название</label>
+        <input class="form-control" asp-for="Title" />
+    </div>
+    <div class="col-md-4">
+        <label class="form-label" asp-for="PublishedYear">Год издания</label>
+        <input class="form-control" asp-for="PublishedYear" />
+    </div>
+    <div class="col-md-8">
+        <label class="form-label" asp-for="Author">Автор</label>
+        <input class="form-control" asp-for="Author" />
+    </div>
+    <div class="col-md-4">
+        <label class="form-label" asp-for="PageCount">Страниц</label>
+        <input class="form-control" asp-for="PageCount" />
+    </div>
+    <div class="col-md-4">
+        <label class="form-label" asp-for="Isbn">ISBN</label>
+        <input class="form-control" asp-for="Isbn" />
+    </div>
+    <div class="col-md-4">
+        <label class="form-label" asp-for="Publisher">Издательство</label>
+        <input class="form-control" asp-for="Publisher" />
+    </div>
+    <div class="col-md-4">
+        <label class="form-label" asp-for="Genre">Жанр</label>
+        <input class="form-control" asp-for="Genre" />
+    </div>
+    <div class="col-md-4">
+        <label class="form-label" asp-for="Language">Язык</label>
+        <input class="form-control" asp-for="Language" />
+    </div>
+    <div class="col-12">
+        <label class="form-label" asp-for="Description">Аннотация</label>
+        <textarea class="form-control" asp-for="Description" rows="3"></textarea>
+    </div>
+    <div class="col-12">
+        <label class="form-label" for="toc-editor">Оглавление</label>
+        <textarea asp-for="ContentsHtml" hidden></textarea>
+        <div id="toc-editor"></div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="~/lib/quill/quill.snow.css" />
+<script src="~/lib/quill/quill.js"></script>
+<script>
+    (function () {
+        const input = document.getElementById("ContentsHtml");
+        const quill = new Quill("#toc-editor", {
+            theme: "snow",
+            modules: {
+                toolbar: [
+                    [{ header: [1, 2, 3, false] }],
+                    ["bold", "italic"],
+                    [{ list: "ordered" }, { list: "bullet" }]
+                ]
+            }
+        });
+
+        if (input.value) {
+            quill.root.innerHTML = input.value;
+        }
+
+        input.form.addEventListener("submit", function () {
+            input.value = typeof quill.getSemanticHTML === "function"
+                ? quill.getSemanticHTML()
+                : quill.root.innerHTML;
+        });
+    })();
+</script>
